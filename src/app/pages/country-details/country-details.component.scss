@@ -1,19 +1,18 @@
-.home-container {
+.details-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
 }
 
-.home-title {
-    background-color: #04838f;
+.country-title {
     color: white;
     font-family: Arial, sans-serif;
-    font-size: 2vw;
+    font-size: 2.5vw;
     padding: 10px 15px;
     border-radius: 10px;
-    margin-top: 0.5vh;
-    margin-bottom: 2vh;
+    margin-top: 1vh;
+    margin-bottom: 5vh;
     text-align: center;
     max-width: 90%;
     word-wrap: break-word;
@@ -30,13 +29,13 @@
 
 .stat {
     text-align: center;
-    border: 2px solid #04838f;
     font-family: Arial, sans-serif;
     padding: 10px;
     border-radius: 8px;
     flex: 1;
     margin: 5px;
-    min-width: 100px
+    min-width: 100px;
+    border: 2px solid; // Permet de définir la couleur du pays
 }
 
 .stat-title {
@@ -46,51 +45,38 @@
 
 .stat .value {
     font-size: 1.2vw;
-    font-weight: bold;
-    color: black;
+    font-weight: 600;
 }
 
 .chart-container {
-    width: 80%;
-    max-width: 500px;
-    margin: auto;
-    height: 65vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.legend-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 20px;
     width: 100%;
     max-width: 800px;
 }
 
-.legend-item {
+.back-button {
+    background-color: transparent;
+    font-family: Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3.5vw;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+    align-self: flex-start;
     display: flex;
     align-items: center;
-    margin: 5px 10px;
+    padding: 5px;
 }
 
-.legend-color {
-    width: 20px;
-    height: 20px;
-    border-radius: 3px;
-    margin-right: 8px;
+.back-button:hover {
+    transform: scale(1.25);
 }
 
-.legend-label {
-    font-family: Arial, sans-serif;
-    font-size: 1.5vw;
-    color: grey;
+.back-button:focus {
+    outline: none;
 }
-
 
 @media (max-width: 768px) {
-    .home-title {
+    .country-title {
         font-size: 5vw;
         margin-top: 5vh;
         margin-bottom: 5vh;
@@ -108,16 +94,15 @@
 
     .stat .value {
         font-size: 4vw;
-
     }
 }
 
 @media (min-width: 1200px) {
-    .home-title {
+    .country-title {
         font-size: 2.5vw;
     }
 
     .stat .value {
-        font-size: 1.2vw;
+        font-size: 1vw;
     }
 }

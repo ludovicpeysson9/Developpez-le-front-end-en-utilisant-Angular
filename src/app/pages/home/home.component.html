@@ -1,3 +1,27 @@
-<h2>Olympic games app</h2>
-<hr />
-<p>{{ (olympics$ | async)?.length }} data loaded</p>
+<div class="home-container">
+    <div class="home-title">Medals per Country</div>
+
+    <div class="statistics">
+        <div class="stat">
+            <div class="stat-title">Number Of JOs</div>
+            <div class="value">{{ totalJO }}</div>
+        </div>
+        <div class="stat">
+            <div class="stat-title">Number of countries</div>
+            <div class="value">{{ totalCountries }}</div>
+        </div>
+    </div>
+
+    <div *ngIf="olympics.length" class="chart-container">
+        <canvas baseChart [data]="getChartData()" [labels]="getChartLabels()" [type]="'pie'" [legend]="false"
+            [options]="chartOptions" (chartClick)="onChartClick($event)">
+        </canvas>
+    </div>
+
+    <div *ngIf="olympics.length" class="legend-container">
+        <div *ngFor="let country of olympics" class="legend-item">
+            <div class="legend-color" [style.background-color]="getCountryColor(country.country)"></div>
+            <div class="legend-label">{{ country.country }}</div>
+        </div>
+    </div>
+</div>
