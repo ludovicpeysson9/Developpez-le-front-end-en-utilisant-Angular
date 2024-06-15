@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
-import { OlympicService } from 'src/app/core/services/olympic.service';
-import { Olympic } from 'src/app/core/models/Olympic';
+import { OlympicService } from '@services/olympic.service';
+import { Olympic } from '@models/Olympic';
 import { ChartData, ChartOptions, TooltipItem  } from 'chart.js';
-import { CountryColor } from 'src/app/core/models/CountryColor';
+import { CountryColor } from '@models/CountryColor';
 
 @Component({
   selector: 'app-home',
@@ -126,9 +126,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (clickedCountryIndex !== undefined) {
       const clickedCountry = this.olympics[clickedCountryIndex];
       const color = this.getCountryColor(clickedCountry.country);
-      this.router.navigate(['/country-details', clickedCountry.id], {
-        queryParams: { color: color }
-      });
+      this.olympicService.setSelectedCountryColor(color!);
+      this.router.navigate(['/country-details', clickedCountry.id]);
     }
   }
 }

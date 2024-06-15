@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, catchError, tap, map, of, Subject, ReplaySubject } from 'rxjs';
-import { Olympic } from '../models/Olympic';
-import { Participation } from '../models/Participation';
+import { Olympic } from '@models/Olympic';
+import { Participation } from '@models/Participation';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +15,8 @@ export class OlympicService implements OnDestroy {
   private static minMedals: number = Number.MAX_VALUE;
   private static maxMedals: number = Number.MIN_VALUE;
   private yearCityMap = new Map<number, string>();
+
+  private selectedCountryColor$ = new ReplaySubject<string>(1);
 
   constructor(private http: HttpClient) {}
 
@@ -83,6 +85,14 @@ export class OlympicService implements OnDestroy {
 
   getYearCityMap(): Map<number, string> {
     return this.yearCityMap;
+  }
+
+  setSelectedCountryColor(color: string): void {
+    this.selectedCountryColor$.next(color);
+  }
+
+  getSelectedCountryColor(): Observable<string> {
+    return this.selectedCountryColor$.asObservable();
   }
 
   ngOnDestroy(): void {
