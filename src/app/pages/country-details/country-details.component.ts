@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OlympicService } from 'src/app/core/services/olympic.service';
-import { Olympic } from 'src/app/core/models/Olympic';
+import { OlympicService } from '@services/olympic.service';
+import { Olympic } from '@models/Olympic';
 import { ChartData, ChartOptions } from 'chart.js';
-import { Subject, combineLatest } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -26,7 +26,7 @@ export class CountryDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private olympicService: OlympicService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(paramMap => {
@@ -34,9 +34,11 @@ export class CountryDetailsComponent implements OnInit, OnDestroy {
       this.loadCountryData(id);
     });
 
-    this.route.queryParams.subscribe(params => {
-      this.countryColor = params['color'] || '#04838f';
-    });
+    this.olympicService.getSelectedCountryColor()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(color => {
+        this.countryColor = color || '#04838f';
+      });
   }
 
   ngOnDestroy(): void {
@@ -76,9 +78,9 @@ export class CountryDetailsComponent implements OnInit, OnDestroy {
           borderColor: this.countryColor,
           fill: false,
           borderWidth: 2,
-          pointBackgroundColor: this.countryColor, 
-          pointBorderColor: this.countryColor, 
-          pointHoverBackgroundColor: '#fff', 
+          pointBackgroundColor: this.countryColor,
+          pointBorderColor: this.countryColor,
+          pointHoverBackgroundColor: '#fff',
           pointHoverBorderColor: this.countryColor,
         }
       ]
