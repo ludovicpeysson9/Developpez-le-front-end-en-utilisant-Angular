@@ -5,6 +5,7 @@ import { Olympic } from '@models/Olympic';
 import { ChartData, ChartOptions } from 'chart.js';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { CountryColorService } from '@app/core/services/country-color.service';
 
 @Component({
   selector: 'app-country-details',
@@ -12,9 +13,9 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./country-details.component.scss']
 })
 export class CountryDetailsComponent implements OnInit, OnDestroy {
-  olympic: Olympic | undefined;
-  chartData: ChartData<'line'> = { datasets: [] };
-  chartOptions: ChartOptions<'line'> = this.getChartOptions();
+  olympic: Olympic | undefined; // Objet représentant les données du pays sélectionné
+  chartData: ChartData<'line'> = { datasets: [] }; // Données pour le graphique
+  chartOptions: ChartOptions<'line'> = this.getChartOptions(); // Options de configuration du graphique
   totalEntries = 0;
   totalMedals = 0;
   totalAthletes = 0;
@@ -25,16 +26,15 @@ export class CountryDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private countryColorService: CountryColorService,
     private olympicService: OlympicService
   ) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(paramMap => {
-      const id = Number(paramMap.get('id'));
-      this.loadCountryData(id);
-    });
+    // Méthode pour charger les données basées sur l'ID du pays
+    this.initializeRouteParams();
 
-    this.olympicService.getSelectedCountryColor()
+    this.countryColorService.getSelectedCountryColor()
       .pipe(takeUntil(this.destroy$))
       .subscribe(color => {
         this.countryColor = color || '#04838f';
@@ -46,6 +46,18 @@ export class CountryDetailsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // Initialiser les paramètres de l'URL et charger les données
+  private initializeRouteParams(): void {
+    this.route.paramMap.subscribe(paramMap => {
+      const id = Number(paramMap.get('id')); // Conversion de l'ID en nombre
+      if (!isNaN(id)) { // Vérifier que l'ID est un nombre valide
+        this.loadCountryData(id); // Chargement des données du pays
+      } else {
+        console.error('Invalid country ID');
+      }
+    });
+  }
+
   private loadCountryData(id: number): void {
     this.olympicService.loadInitialData().pipe(
       takeUntil(this.destroy$)
@@ -53,38 +65,16 @@ export class CountryDetailsComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.olympic = data.find(o => o.id === id);
         if (this.olympic) {
-          this.updateStatistics(this.olympic);
-          this.chartData = this.createChartData(this.olympic);
+          const stats = this.olympicService.getStatistics(this.olympic);  // Utilisation de la méthode du service pour les statistiques
+          this.totalEntries = stats.totalEntries;
+          this.totalMedals = stats.totalMedals;
+          this.totalAthletes = stats.totalAthletes;
+          this.chartData = this.olympicService.createChartData(this.olympic, this.countryColor);  // Utilisation de la méthode du service pour les données du graphique
           this.updateChartOptions();
         }
       },
       error: (err) => console.error(err),
     });
-  }
-
-  private updateStatistics(olympic: Olympic): void {
-    this.totalEntries = olympic.participations.length;
-    this.totalMedals = olympic.participations.reduce((sum, p) => sum + p.medalsCount, 0);
-    this.totalAthletes = olympic.participations.reduce((sum, p) => sum + p.athleteCount, 0);
-  }
-
-  private createChartData(olympic: Olympic): ChartData<'line'> {
-    return {
-      labels: olympic.participations.map(p => p.year.toString()),
-      datasets: [
-        {
-          label: 'Nombre de médailles',
-          data: olympic.participations.map(p => p.medalsCount),
-          borderColor: this.countryColor,
-          fill: false,
-          borderWidth: 2,
-          pointBackgroundColor: this.countryColor,
-          pointBorderColor: this.countryColor,
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: this.countryColor,
-        }
-      ]
-    };
   }
 
   private updateChartOptions(): void {
