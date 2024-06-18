@@ -1,29 +1,39 @@
-# OlympicGamesStarter
+# Olympic Games App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+Lien du repo : https://github.com/ludovicpeysson9/Developpez-le-front-end-en-utilisant-Angular.git
 
-Don't forget to install your node_modules before starting (`npm install`).
+## Description
 
-## Development server
+Ce projet est une application web développée avec Angular. Il est composé d’un dashboard qui présente un graphique sous forme de camembert qui représente les pays ayant participés aux JO (défini dans `olympic.json`) selon leur nombre de médailles gagnées.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Pour plus de détails on peut cliquer sur une part de ce camembert et être redirigé vers un graphique de type courbe, plus représentatif des statistiques des pays selon leurs participations.
 
-## Build
+## Bibliothèques
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Les bibliothèques utilisées sont : 
+- `chart.js`  
+- `ng2-charts` 
 
-## Where to start
+## Prérequis
 
-As you can see, an architecture has already been defined for the project. It is just a suggestion, you can choose to use your own. The predefined architecture includes (in addition to the default angular architecture) the following:
+Pour faire fonctionner ce projet, il vous faudra Node.js, avec le gestionnaire de paquets npm ainsi que Angular CLI. Il vous faudra peut être également Angular CDK.
 
-- `components` folder: contains every reusable components
-- `pages` folder: contains components used for routing
-- `core` folder: contains the business logic (`services` and `models` folders)
+### Récapitulatif des différentes versions : 
 
-I suggest you to start by understanding this starter code. Pay an extra attention to the `app-routing.module.ts` and the `olympic.service.ts`.
+- Node.js 14.15.0 (version minimum requise), avec npm 6.14.8
+- Angular CLI 14.1.0
+- Angular CDK 14.1.0
+- chart.js 3.9.1
+- ng2-charts 3.1.0
 
-Once mastered, you should continue by creating the typescript interfaces inside the `models` folder. As you can see I already created two files corresponding to the data included inside the `olympic.json`. With your interfaces, improve the code by replacing every `any` by the corresponding interface.
+## Processus d’installation du projet
 
-You're now ready to implement the requested features.
-
-Good luck!
+1. Installer Node.js 14.15.0 minimum.
+2. Vérifier l’installation avec la version, vérifier également l’installation de npm et sa version.
+3. Installer Angular CLI 14.1.0, vérifier l’installation et sa version.
+4. Cloner le projet https://github.com/ludovicpeysson9/Developpez-le-front-end-en-utilisant-Angular.git.
+5. Vérifier dans le fichier `package.json` s'il y a bien la dépendance Angular CDK 14.1.0.
+6. Le cas échéant, ouvrir un terminal à la racine du projet (là où se trouve le fichier `package.json`) et installer Angular CDK 14.1.0.
+7. Toujours à cet endroit, lancer `npm install`.
+8. Toujours à cet endroit, lancer la commande `ng serve`.
+9. Vous avez désormais accès au projet à l’adresse suivante http://localhost:4200
