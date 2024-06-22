@@ -114,8 +114,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     const clickedCountryIndex = event.active[0]?.index;
     if (clickedCountryIndex !== undefined) {
       const clickedCountry = this.olympics[clickedCountryIndex]; // Données du pays cliqué
-      const color = this.getCountryColor(clickedCountry.country);
-      this.countryColorService.setSelectedCountryColor(color);
       this.router.navigate(['/country-details', clickedCountry.id]);
     }
   }

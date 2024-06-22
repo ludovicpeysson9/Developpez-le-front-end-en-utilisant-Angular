@@ -33,12 +33,6 @@ export class CountryDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Méthode pour charger les données basées sur l'ID du pays
     this.initializeRouteParams();
-
-    this.countryColorService.getSelectedCountryColor()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(color => {
-        this.countryColor = color || '#04838f';
-      });
   }
 
   ngOnDestroy(): void {
@@ -53,6 +47,7 @@ export class CountryDetailsComponent implements OnInit, OnDestroy {
       if (!isNaN(id)) { // Vérifier que l'ID est un nombre valide
         this.loadCountryData(id); // Chargement des données du pays
       } else {
+        this.router.navigate(['/404']); // Renvoi sur 404 si id n'est pas un nombre
         console.error('Invalid country ID');
       }
     });
@@ -69,8 +64,11 @@ export class CountryDetailsComponent implements OnInit, OnDestroy {
           this.totalEntries = stats.totalEntries;
           this.totalMedals = stats.totalMedals;
           this.totalAthletes = stats.totalAthletes;
+          this.countryColor = this.countryColorService.getColorForCountry(this.olympic.country); // Recupere grâce au service la couleur associee au pays
           this.chartData = this.olympicService.createChartData(this.olympic, this.countryColor);  // Utilisation de la méthode du service pour les données du graphique
           this.updateChartOptions();
+        } else {
+          this.router.navigate(['/404']); // Renvoie sur 404 si id non présent 
         }
       },
       error: (err) => console.error(err),
