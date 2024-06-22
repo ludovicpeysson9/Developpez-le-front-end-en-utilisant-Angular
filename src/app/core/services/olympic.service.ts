@@ -17,8 +17,6 @@ export class OlympicService implements OnDestroy {
   private static maxMedals: number = Number.MIN_VALUE;
   private yearCityMap = new Map<number, string>();
 
-  private selectedCountryColor$ = new ReplaySubject<string>(1); // Stocke la couleur sélectionnée pour un pays
-
   constructor(private http: HttpClient) {}
 
 
